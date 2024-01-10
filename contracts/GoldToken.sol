@@ -1,22 +1,37 @@
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+// SPDX-License-Identifier: MIT
+pragma solidity <=0.8.19;
 
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-IERC20 SepoliaETH = IERC20(0x...); // set correct SepoliaETH address here
-//In addition to the mint function, add a function to calculate the amount of gold tokens user will get for a given amount of SepoliaETH. This functio
- //calculates the equivalent amount of gold tokens based on SepoliaETH and current gold price.
+contract GoldToken is ERC20 {
+    AggregatorV3Interface internal priceFeed;
+    address public owner;
 
-function calculateGoldTokenAmount(uint256 _sepoliaEthAmount) public view returns (uint256) {
-    uint256 goldPrice = getLatestGoldPrice();
-    return (_sepoliaEthAmount * 10**18) / goldPrice;
-}
-Finally, add a function where a user buys gold tokens by sending SepoliaETH. The function calculates the amount of gold tokens user will receive, takes SepoliaETH from user, mints Gold tokens and sends it to the user.
+    constructor() ERC20("Gold Token", "GLD") {
+        priceFeed = AggregatorV3Interface(0xC5981F461d74c46eB4b0CF3f4Ec79f025573B0Ea);
+        owner = msg.sender;
+    }
 
-function buyGoldTokens(uint256 _sepoliaEthAmount) public {
-    uint256 goldTokens = calculateGoldTokenAmount(_sepoliaEthAmount);
+    function getLatestGoldPrice() public view returns (uint256) {
+        (,int price,,,) = priceFeed.latestRoundData();
+        return uint256(price) / 10**8;
+    }
 
-    // transfer SepoliaETH from user to this contract for later use or liquidity provision
-    require(SepoliaETH.transferFrom(msg.sender, address(this), _sepoliaEthAmount), "Insufficient SepoliaETH balance");
+    function calculateGoldTokenAmount(uint256 _sepoliaEthAmount) public view returns (uint256) {
+        uint256 goldPrice = getLatestGoldPrice();
+        return (_sepoliaEthAmount * 10**18) / goldPrice;
+    }
 
-    // mint gold tokens
-    _mint(msg.sender, goldTokens);
+    function buyGoldTokens() public payable {
+        uint256 goldTokens = calculateGoldTokenAmount(msg.value);
+
+        // Mint gold tokens
+        _mint(msg.sender, goldTokens);
+    }
+
+    function mint(address to, uint256 _amount) public {
+        require(msg.sender == owner, "Only the owner can mint tokens");
+        _mint(to, _amount);
+    }
 }
