@@ -12,6 +12,7 @@ const Web3Provider : FunctionComponent<any> = ({children}) =>{
     useEffect(()=>{
        async function initweb3api(){
         const contract = await loadContract("GoldToken",provider);
+
             setweb3Api({
                 ethereum,
                 provider,

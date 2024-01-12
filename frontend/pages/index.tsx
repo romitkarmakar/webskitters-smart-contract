@@ -16,8 +16,12 @@ export default function Home() {
     const fetchAccounts = async () => {
       if (provider) {
         const res:string[] = await provider.send("eth_requestAccounts", []);
+        const signer = await provider.getSigner()
+        console.log("RESULT",res)
+        console.log("signer",signer)
       }
     }
+    fetchAccounts();
   }, [provider])
   return (
     <BaseLayout>
