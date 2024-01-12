@@ -12,14 +12,7 @@ import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@
 export function Maincomponent() {
   return (
     <main className="bg-gray-100 dark:bg-gray-900 min-h-screen py-10 px-4 md:px-6">
-      <header className="flex items-center justify-center">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mx-2">GLD TOKEN</h1>
-        <img alt="Gold Token Symbol" className="w-10 h-10" src="/placeholder.svg" />
-        <Avatar className="w-10 h-10 border mx-2">
-          <AvatarImage alt="@shadcn" src="/placeholder-user.jpg" />
-          <AvatarFallback>AC</AvatarFallback>
-        </Avatar>
-      </header>
+
       <section className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
