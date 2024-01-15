@@ -1,6 +1,11 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useAccount } from '@/components/hooks'
+import useCounter from '@/components/hooks/web3/useCounter'
+
+
+
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
@@ -14,6 +19,13 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
+
+  const data = useAccount()
+  console.log(data)
+
+  // const {count} = useCounter(0)
+  // console.log(count)
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
