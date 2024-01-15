@@ -1,6 +1,7 @@
 import { FunctionComponent, createContext, useContext, useEffect, useState } from "react";
 import { Web3State, createDefaultState, loadContract } from "./utils";
 import { ethers } from "ethers";
+import { setupHooks } from "@/components/hooks/web3/setupHooks";
 
 const Web3Context = createContext<Web3State>(createDefaultState());
 
@@ -12,14 +13,14 @@ const Web3Provider: FunctionComponent<any> = ({ children }) => {
 
     useEffect(() => {
         async function initweb3api() {
-            console.log('IAM HERE')
             const contract = await loadContract("GoldToken", provider);
 
             setweb3Api({
                 ethereum: window.ethereum,
                 provider: provider,
                 contract,
-                isLoading: false
+                isLoading: false,
+                hooks : setupHooks({ethereum:window.ethereum, provider, contract})
             })
         }
         initweb3api()
@@ -32,7 +33,6 @@ const Web3Provider: FunctionComponent<any> = ({ children }) => {
 }
 
 export function useweb3() {
-    console.log("iam inside web3")
     return useContext(Web3Context)
 }
 

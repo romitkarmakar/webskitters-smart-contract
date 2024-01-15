@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useAccount } from '@/components/hooks'
 import useCounter from '@/components/hooks/web3/useCounter'
-
+import { useweb3 } from '@/components/providers/web3'
 
 
 
@@ -22,6 +22,11 @@ export default function Navbar() {
 
   const data = useAccount()
   console.log(data)
+  const { hooks } = useweb3();
+  console.log("HOOKS",hooks)
+  const data1 = hooks.useAccount("")
+  // console.log(data1)
+
 
   // const {count} = useCounter(0)
   // console.log(count)
@@ -163,3 +168,4 @@ export default function Navbar() {
     </Disclosure>
   )
 }
+
