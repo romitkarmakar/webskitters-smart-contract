@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useAccount } from '@/components/hooks'
@@ -19,17 +19,28 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
+  // const { hooks } = useweb3();
+  // console.log("HOOKS", hooks)
+  // const data1 = () => { hooks.useAccount("") }
+  // console.log("THIS IS DATA",data1)
+  // const acc =()=> useAccount();
+  // const {account} = acc()
+  // console.log("SWR response",account)
+  // const { account } = useAccount();
+  // //   console.log(account)
+  // useEffect(()=>{
+  //   function nothing(){
+  //     // const { account } = useAccount();
+  //     console.log(account)
+  //   }
+  //   nothing()
+  // },[])
 
-  const data = useAccount()
-  console.log(data)
-  const { hooks } = useweb3();
-  console.log("HOOKS",hooks)
-  const data1 = hooks.useAccount("")
-  // console.log(data1)
+  // const f = ()=>useAccount()
+  // const {account} = f()
+  const {account}  = useAccount()
+  console.log("ACCUUNT",account)
 
-
-  // const {count} = useCounter(0)
-  // console.log(count)
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
