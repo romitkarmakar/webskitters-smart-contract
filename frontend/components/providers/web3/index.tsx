@@ -13,13 +13,21 @@ const Web3Provider: FunctionComponent<any> = ({ children }) => {
     useEffect(() => {
         async function initWeb3() {
             const contract = await loadContract("GoldToken", provider!);
-
-            setweb3Api(createWeb3State({
-                ethereum: window.ethereum,
-                provider,
-                contract,
-                isLoading: false
-            }))
+            try{
+                setweb3Api(createWeb3State({
+                    ethereum: window.ethereum,
+                    provider,
+                    contract,
+                    isLoading: false
+                }))
+            }catch(e:any){
+                console.error("Please, install metamask wallet ");
+                setweb3Api((api)=>createWeb3State({
+                    ...api as any,
+                    isLoading : false
+                }))
+            }
+            
         }
         initWeb3();
     }, [])
