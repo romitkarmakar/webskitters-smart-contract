@@ -3,12 +3,10 @@ import useSWR from "swr";
 
 // deps -> provider, ethereum, contract (web3State)
 
-type AccountHookFactory = CryptoHookFactory<string, string>
+type AccountHookFactory = CryptoHookFactory<string>
 export type UseAccountHook = ReturnType<AccountHookFactory>
-export const hookFactory: AccountHookFactory = (deps) => (params) => {
-  const swrRes = useSWR("web3/useAccount", () => {
-    console.log(deps);
-    console.log(params);
+export const hookFactory: AccountHookFactory = ({provider}) => (params) => {
+  const swrRes = useSWR(provider?"web3/useAccount":null, () => {
     // making request to get data
     return "Test User"
   })

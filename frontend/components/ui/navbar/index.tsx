@@ -19,28 +19,8 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
-  // const { hooks } = useweb3();
-  // console.log("HOOKS", hooks)
-  // const data1 = () => { hooks.useAccount("") }
-  // console.log("THIS IS DATA",data1)
-  // const acc =()=> useAccount();
-  // const {account} = acc()
-  // console.log("SWR response",account)
-  // const { account } = useAccount();
-  // //   console.log(account)
-  // useEffect(()=>{
-  //   function nothing(){
-  //     // const { account } = useAccount();
-  //     console.log(account)
-  //   }
-  //   nothing()
-  // },[])
-
-  // const f = ()=>useAccount()
-  // const {account} = f()
-  const res = useAccount
-  console.log("ACCUUNT", res())
-
+  const { account } = useAccount();
+    console.log("ACCOUNT DETAILS",account)
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
