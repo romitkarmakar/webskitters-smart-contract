@@ -38,8 +38,8 @@ export default function Navbar() {
 
   // const f = ()=>useAccount()
   // const {account} = f()
-  const {account}  = useAccount()
-  console.log("ACCUUNT",account)
+  const res = useAccount
+  console.log("ACCUUNT", res())
 
 
   return (
