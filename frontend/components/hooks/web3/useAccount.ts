@@ -1,30 +1,33 @@
 import { CryptoHookFactory } from "@/types/hooks";
 import { useEffect } from "react";
-import useSWR from "swr";
+import useSWR, { SWRConfiguration } from "swr";
 
 // deps -> provider, ethereum, contract (web3State)
-type useAccountResponse ={
-  connect :() => void;
+type useAccountResponse = {
+  connect: () => void;
   isLoading: boolean;
   isInstalled: boolean;
 }
+const config: SWRConfiguration = {
+  revalidateOnFocus: false
+}
 
-type AccountHookFactory = CryptoHookFactory<string,useAccountResponse>
+type AccountHookFactory = CryptoHookFactory<string, useAccountResponse>
 export type UseAccountHook = ReturnType<AccountHookFactory>
-export const hookFactory: AccountHookFactory = ({provider,ethereum,isLoading}) => () => {
-  const {data,mutate,isValidating,...swr} = useSWR(
+export const hookFactory: AccountHookFactory = ({ provider, ethereum, isLoading }) => (params) => {
+  const { data, mutate, isValidating, ...swr } = useSWR(
     provider ? "web3/useAccount" : null,
     async () => {
+      console.log("INSIDE")
       const accounts = await provider!.listAccounts();
       const account = accounts[0];
-      
+      console.log('THIS IS ACCOUNT :', account)
       if (!account) {
         throw "Cannot retreive account! Please, connect to web3 wallet."
       }
       return JSON.stringify(account);
-    },{
-      revalidateOnFocus: false
-    }
+      // return "This is the data"
+    }, config
   )
   useEffect(() => {
     ethereum?.on("accountsChanged", handleAccountsChanged);
@@ -44,8 +47,8 @@ export const hookFactory: AccountHookFactory = ({provider,ethereum,isLoading}) =
 
   const connect = async () => {
     try {
-      ethereum?.request({method: "eth_requestAccounts"});
-    } catch(e) {
+      ethereum?.request({ method: "eth_requestAccounts" });
+    } catch (e) {
       console.error(e);
     }
   }
@@ -54,11 +57,11 @@ export const hookFactory: AccountHookFactory = ({provider,ethereum,isLoading}) =
     ...swr,
     data,
     isValidating,
-    isLoading : isLoading || isValidating,
-    isInstalled : ethereum?.isMetaMask || false,
+    isLoading: isLoading || isValidating,
+    isInstalled: ethereum?.isMetaMask || false,
     mutate,
     connect
-  }; 
+  };
 }
 
 export const useAccount = () => {

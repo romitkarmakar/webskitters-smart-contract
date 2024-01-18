@@ -17,17 +17,17 @@ export default function Home() {
       if (provider) {
         const res: string[] = await provider!.send("eth_requestAccounts", []);
         const signer = await provider.getSigner()
-        console.log("RESULT", res)
-        console.log("signer", signer)
-        console.log("ADDRESS -", signer.address)
+        // console.log("RESULT", res)
+        // console.log("signer", signer)
+        // console.log("ADDRESS -", signer.address)
       }
     }
     fetchAccounts();
   }, [provider])
 
 
-  console.log("ETHEREUM", ethereum)
-  console.log("Contract", contract)
+  // console.log("ETHEREUM", ethereum)
+  // console.log("Contract", contract)
 
   const getInfo = async () => {
     return await contract!.getAddress()

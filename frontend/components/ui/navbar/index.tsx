@@ -2,7 +2,6 @@ import { Fragment, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useAccount } from '@/components/hooks'
-import useCounter from '@/components/hooks/web3/useCounter'
 import { useweb3 } from '@/components/providers/web3'
 import Link from 'next/link'
 import Walletbar from './WalletBar'
@@ -24,7 +23,10 @@ export default function Navbar() {
   const { account } = useAccount();
   console.log("Is Loading: ", account.isLoading);
   console.log("Is Installed: ", account.isInstalled);
-  console.log("ACCOUNT DETAILS", account)
+  console.log("ACCOUNT DETAILS", account.data)
+  if (!account.isLoading && !account.isInstalled) {
+    console.error("Need to install metamask")
+  }
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -55,9 +57,10 @@ export default function Navbar() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
-                        key={item.name}
+                      <Link key={item.name}
                         href={item.href}
+
+
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                           'rounded-md px-3 py-2 text-sm font-medium'
@@ -65,7 +68,8 @@ export default function Navbar() {
                         aria-current={item.current ? 'page' : undefined}
                       >
                         {item.name}
-                      </a>
+
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -81,7 +85,7 @@ export default function Navbar() {
                 </button> */}
 
                 {/* Profile dropdown */}
-               <Walletbar isLoading={account.isLoading} isInstalled={account.isInstalled} account={account.data} connect={account.connect}/>
+                <Walletbar isLoading={account.isLoading} isInstalled={account.isInstalled} account={account.data} connect={account.connect} />
               </div>
             </div>
           </div>
