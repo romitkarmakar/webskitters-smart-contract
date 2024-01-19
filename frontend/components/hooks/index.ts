@@ -9,3 +9,12 @@ export const useAccount = () => {
         account: swrRes
     }
 }
+
+export const useNetwork = () =>{
+    const {hooks} = useweb3()
+    const swrRes = hooks.useNetwork()
+
+    return {
+        network : swrRes
+    }
+}

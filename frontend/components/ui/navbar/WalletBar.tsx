@@ -71,8 +71,6 @@ const Walletbar: FunctionComponent<WalletbarProps> = ({
               >
                 Profile
               </Link>
-              
-
             )}
           </Menu.Item>
           <Menu.Item>

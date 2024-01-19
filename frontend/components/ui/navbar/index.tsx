@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { useAccount } from '@/components/hooks'
+import { useAccount, useNetwork } from '@/components/hooks'
 import { useweb3 } from '@/components/providers/web3'
 import Link from 'next/link'
 import Walletbar from './WalletBar'
@@ -21,9 +21,11 @@ function classNames(...classes: string[]) {
 
 export default function Navbar() {
   const { account } = useAccount();
-  console.log("Is Loading: ", account.isLoading);
-  console.log("Is Installed: ", account.isInstalled);
-  console.log("ACCOUNT DETAILS", account.data)
+  const {network} = useNetwork()
+  console.log("HELOOOOOO ", network)
+  // console.log("Is Loading: ", account.isLoading);
+  // console.log("Is Installed: ", account.isInstalled);
+  // console.log("ACCOUNT DETAILS", account.data)
   if (!account.isLoading && !account.isInstalled) {
     console.error("Need to install metamask")
   }
