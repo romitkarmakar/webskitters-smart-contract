@@ -1,8 +1,14 @@
 import { FunctionComponent, createContext, useContext, useEffect, useState } from "react";
 import { Web3State, createDefaultState, createWeb3State, loadContract } from "./utils";
 import { ethers } from "ethers";
+import { MetaMaskInpageProvider } from "@metamask/providers";
 
 const Web3Context = createContext<Web3State>(createDefaultState());
+
+function pageReload(){
+    window.location.reload()
+}
+
 
 const Web3Provider: FunctionComponent<any> = ({ children }) => {
     const [web3Api, setweb3Api] = useState<Web3State>(createDefaultState())
@@ -13,7 +19,9 @@ const Web3Provider: FunctionComponent<any> = ({ children }) => {
     useEffect(() => {
         async function initWeb3() {
             const contract = await loadContract("GoldToken", provider!);
+            
             try{
+                setGlobalListeners(window.ethereum)
                 setweb3Api(createWeb3State({
                     ethereum: window.ethereum,
                     provider,
@@ -30,7 +38,15 @@ const Web3Provider: FunctionComponent<any> = ({ children }) => {
             
         }
         initWeb3();
+        return () => removeGlobalListeners(window.ethereum);
+
     }, [])
+    const setGlobalListeners = (ethereum: MetaMaskInpageProvider) =>{
+        ethereum.on("accountsChanged",pageReload)
+    }
+    const removeGlobalListeners = (ethereum : MetaMaskInpageProvider) =>{
+        ethereum.removeListener("chainChanged", pageReload)
+    }
     return (
         <Web3Context.Provider value={web3Api}>
             {children}
