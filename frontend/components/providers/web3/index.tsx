@@ -5,7 +5,7 @@ import { MetaMaskInpageProvider } from "@metamask/providers";
 
 const Web3Context = createContext<Web3State>(createDefaultState());
 
-function pageReload(){
+function pageReload() {
     window.location.reload()
 }
 
@@ -15,12 +15,12 @@ const Web3Provider: FunctionComponent<any> = ({ children }) => {
 
     const ethereum = typeof window !== 'undefined' ? window.ethereum : null;
     const provider = ethereum ? new ethers.BrowserProvider(ethereum) : null;
-
+    var flag = 0
     useEffect(() => {
         async function initWeb3() {
             const contract = await loadContract("GoldToken", provider!);
-            
-            try{
+
+            try {
                 setGlobalListeners(window.ethereum)
                 setweb3Api(createWeb3State({
                     ethereum: window.ethereum,
@@ -28,25 +28,27 @@ const Web3Provider: FunctionComponent<any> = ({ children }) => {
                     contract,
                     isLoading: false
                 }))
-            }catch(e:any){
+            } catch (e: any) {
                 console.error("Please, install metamask wallet ");
-                setweb3Api((api)=>createWeb3State({
+                setweb3Api((api) => createWeb3State({
                     ...api as any,
-                    isLoading : false
+                    isLoading: false
                 }))
             }
-            
+
         }
         initWeb3();
-        return () => removeGlobalListeners(window.ethereum);
+        return () => {
+            if (ethereum) { removeGlobalListeners(window.ethereum); }
+        }
 
     }, [])
-    const setGlobalListeners = (ethereum: MetaMaskInpageProvider) =>{
-        ethereum.on("accountsChanged",pageReload)
+    const setGlobalListeners = (ethereum: MetaMaskInpageProvider) => {
+        ethereum.on("accountsChanged", pageReload)
         ethereum.on('chainChanged', pageReload);
     }
-    const removeGlobalListeners = (ethereum : MetaMaskInpageProvider) =>{
-        ethereum.removeListener("accountsChanged", pageReload) 
+    const removeGlobalListeners = (ethereum: MetaMaskInpageProvider) => {
+        ethereum.removeListener("accountsChanged", pageReload)
         ethereum.removeListener("chainChanged", pageReload)
     }
     return (
@@ -62,5 +64,5 @@ export function useweb3() {
 export function useHooks() {
     const { hooks } = useweb3();
     return hooks;
-  }
+}
 export default Web3Provider
