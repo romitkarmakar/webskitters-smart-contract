@@ -43,8 +43,10 @@ const Web3Provider: FunctionComponent<any> = ({ children }) => {
     }, [])
     const setGlobalListeners = (ethereum: MetaMaskInpageProvider) =>{
         ethereum.on("accountsChanged",pageReload)
+        ethereum.on('chainChanged', pageReload);
     }
     const removeGlobalListeners = (ethereum : MetaMaskInpageProvider) =>{
+        ethereum.removeListener("accountsChanged", pageReload) 
         ethereum.removeListener("chainChanged", pageReload)
     }
     return (
