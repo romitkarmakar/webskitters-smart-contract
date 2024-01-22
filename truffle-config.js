@@ -44,7 +44,7 @@
 // require('dotenv').config();
 // const { MNEMONIC, PROJECT_ID } = process.env;
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 module.exports = {
   /**
@@ -65,10 +65,25 @@ module.exports = {
     // options below to some value.
     //
     development: {
-     host: "127.0.0.1",     // Localhost (default: none)
-     port: 7545,            // Standard Ethereum port (default: none)
-     network_id: "*",       // Any network (default: none)
+      host: "127.0.0.1",     // Localhost (default: none)
+      port: 7545,            // Standard Ethereum port (default: none)
+      network_id: "*",       // Any network (default: none)
     },
+    sepolia: {
+      provider: () => new HDWalletProvider({
+        privateKeys:
+          ["78b0152433f48a07f7351f65128bf3450944274ad70a2271dc4224538e1e3454"]
+        ,
+        providerOrUrl: "https://sepolia.infura.io/v3/0ea4fbedeba6421a90c743e3d9eda5be"
+      }),
+      network_id: 11155111, // Sepolia's network ID
+      gas: 4000000, // Adjust the gas limit as per your requirements
+      gasPrice: 110000000000, // Set the gas price to an appropriate value
+      confirmations: 2, // Set the number of confirmations needed for a transaction
+      timeoutBlocks: 5, // Set the timeout for transactions
+      skipDryRun: true // Skip the dry run option
+    }
+
     //
     // An additional network, but with some advanced options…
     // advanced: {

@@ -15,8 +15,10 @@ export type UseContractHook = ReturnType<ContractHookFactory>
 
 export const hookFactory: UseContractHook = ({ contract, isLoading }) => () => {
     const { data, mutate, isValidating, ...swr } = useSWR(contract ? "web3/useContracts" : null, async () => {
-        const someString = "Hello contract"
-        return someString
+        // const someString = "Hello contract"
+        // return someString
+        // console.log("THIS IS THE CONTRACT ADD",await contract.getAddress())
+        return contract
     }, config)
     return {
         ...swr,

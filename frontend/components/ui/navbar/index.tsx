@@ -22,12 +22,27 @@ function classNames(...classes: string[]) {
 export default function Navbar() {
   const { account } = useAccount();
   const {network} = useNetwork()
-  const {contract} = useContract()
+  
+  const { contract } = useContract();
 
-  console.log("THIS IS CONTRACT",contract)
+  useEffect(() => {
+    const fetchLatestGoldPrice = async() => {
+      try {
+        // console.log("Inside swdjsbxjksbjk")
+          if (contract && contract.methods && typeof contract.methods.getLatestGoldPrice === 'function') {
+              const price = await contract.methods.getLatestGoldPrice().call();
+              console.log("Latest Gold Price: ", price);
+          }
+      } catch (err) {
+          console.warn("Error fetching latest gold price", err);
+      }
+  
+      fetchLatestGoldPrice();
+    }
+  }, [contract]);
 
   // console.log("HELOOOOOO ", network)
-  // console.log("Is Loading: ", account.isLoading);
+  // console.log("Is Loading: ", account.isLoading);  
   // console.log("Is Installed: ", account.isInstalled);
   // console.log("ACCOUNT DETAILS", account.data)
   if (!account.isLoading && !account.isInstalled) {

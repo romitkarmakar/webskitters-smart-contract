@@ -66,7 +66,7 @@ export const loadContract = async (
         Artifact.abi,
         provider
       )
-  
+      // console.log("THIS IS THE ADDRESS OF CONTRACT",await contract.getAddress())
       return contract;
     } else {
       return Promise.reject(`Contract: [${name}] cannot be loaded!`);
