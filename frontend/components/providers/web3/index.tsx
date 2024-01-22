@@ -44,13 +44,18 @@ const Web3Provider: FunctionComponent<any> = ({ children }) => {
 
     }, [])
     const setGlobalListeners = (ethereum: MetaMaskInpageProvider) => {
-        ethereum.on("accountsChanged", pageReload)
+        ethereum.on("accountsChanged", handleAccount(ethereum))
         ethereum.on('chainChanged', pageReload);
     }
     const removeGlobalListeners = (ethereum: MetaMaskInpageProvider) => {
-        ethereum.removeListener("accountsChanged", pageReload)
+        ethereum.removeListener("accountsChanged", handleAccount)
         ethereum.removeListener("chainChanged", pageReload)
     }
+    const handleAccount = (ethereum: MetaMaskInpageProvider) => async () => {
+        const isLocked =  !(await ethereum._metamask.isUnlocked());
+        if (isLocked) { pageReload(); }
+      }
+      
     return (
         <Web3Context.Provider value={web3Api}>
             {children}
